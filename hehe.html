@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erasmus | Philosophical Writings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2A2A2A;
+            --secondary: #F5F5F5;
+            --accent: #C19A6B;
+            --danger: #C0392B;
+            --success: #27AE60;
+        }
+
+        /* CHANGED MARGIN-BOTTOM VALUE */
+        .blog-post {
+            margin-bottom: 40px; /* Changed from 2.5rem to 40px */
+            padding: 2rem;
+            background: rgba(34, 34, 34, 0.6);
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border-left: 4px solid var(--accent);
+        }
+
+        /* EVERYTHING ELSE BELOW REMAINS EXACTLY THE SAME */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: var(--secondary);
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(42, 42, 42, 0.95);
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(to right, var(--accent), #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        nav {
+            background: rgba(34, 34, 34, 0.9);
+            padding: 1rem;
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav a {
+            color: var(--secondary);
+            margin: 0 1.5rem;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(42, 42, 42, 0.8);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .blog-post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .blog-post h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent);
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        .blog-post p {
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            white-space: pre-wrap;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .blog-post .edit-btn,
+        .blog-post .delete-btn {
+            position: absolute;
+            top: 1rem;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: none;
+            backdrop-filter: blur(8px);
+        }
+
+        .blog-post .edit-btn {
+            right: 1rem;
+            background: rgba(44, 130, 201, 0.2);
+            color: #2c82c9;
+            border: 1px solid #2c82c9;
+        }
+
+        .blog-post .delete-btn {
+            right: 8rem;
+            background: rgba(192, 57, 43, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .blog-post .edit-btn:hover {
+            background: #2c82c9;
+            color: white;
+        }
+
+        .blog-post .delete-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        footer {
+            background: rgba(42, 42, 42, 0.95);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .add-blog-form {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(34, 34, 34, 0.6);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .add-blog-form h2 {
+            color: var(--accent);
+            font-family: 'Playfair Display', serif;
+            margin-top: 0;
+        }
+
+        .add-blog-form input,
+        .add-blog-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--secondary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .add-blog-form input:focus,
+        .add-blog-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(193, 154, 107, 0.3);
+        }
+
+        .add-blog-form button {
+            background: linear-gradient(135deg, var(--accent), #b88b58);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .add-blog-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(193, 154, 107, 0.3);
+        }
+
+        #about-page {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        #about-page h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        #about-page p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .hidden-logo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 15px;
+            height: 15px;
+            background: rgba(193, 154, 107, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(193, 154, 107, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .hidden-logo:hover {
+            transform: scale(1.2);
+            background: rgba(193, 154, 107, 0.5);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(0.95); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            nav a {
+                margin: 0 0.5rem;
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .blog-post .delete-btn {
+                right: 6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ᛉERᛏASMUS</h1>
+    </header>
+    <nav>
+        <a href="#home" id="home-link">Home</a>
+        <a href="#about" id="about-link">About</a>
+    </nav>
+
+    <div class="container" id="home-page">
+        <div id="blog-posts"></div>
+        <div class="add-blog-form" id="add-blog-form">
+            <h2>Add a New Blog Post</h2>
+            <input type="password" id="password" placeholder="Enter Password" required>
+            <input type="text" id="title" placeholder="Blog Title" required>
+            <textarea id="content" rows="5" placeholder="Blog Content" required></textarea>
+            <button onclick="addBlog()">Publish Blog</button>
+        </div>
+    </div>
+
+    <div class="container" id="about-page">
+        <h2>About Me</h2>
+        <p>
+            I, Erasmus, am an individual who writes about human nature by observing myself and others. 
+            Through introspection and careful observation of the world around me, I aim to explore the complexities 
+            of human behavior, emotions, and relationships. My writings reflect my thoughts and insights, 
+            offering a unique perspective on what it means to be human.
+        </p>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Erasmus. All rights reserved.</p>
+    </footer>
+    <div class="hidden-logo" id="hidden-logo"></div>
+
+    <script>
+        let unlockCount = 0;
+        let isUnlocked = false;
+        const ADMIN_PASSWORD = "secret";
+
+        function showPage(pageId) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('about-page').style.display = 'none';
+            document.getElementById(pageId).style.display = 'block';
+        }
+
+        window.onload = function() {
+            if(window.location.hash === "#about") {
+                showPage('about-page');
+            } else {
+                showPage('home-page');
+                loadBlogs();
+            }
+            updateUnlockedFeatures();
+        }
+
+        document.getElementById('home-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('home-page');
+            loadBlogs();
+            window.location.hash = "#home";
+        });
+
+        document.getElementById('about-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('about-page');
+            window.location.hash = "#about";
+        });
+
+        document.getElementById('hidden-logo').addEventListener('click', function() {
+            unlockCount++;
+            
+            // Changed from 10 to 50 clicks required
+            if (!isUnlocked && unlockCount >= 50) {
+                isUnlocked = true;
+                alert('Editing features unlocked for this session!');
+                updateUnlockedFeatures();
+            }
+        });
+
+        function updateUnlockedFeatures() {
+            if(document.getElementById('home-page').style.display === 'block') {
+                document.getElementById('add-blog-form').style.display = isUnlocked ? 'block' : 'none';
+                document.querySelectorAll('.edit-btn, .delete-btn').forEach(btn => {
+                    btn.style.display = isUnlocked ? 'block' : 'none';
+                });
+            }
+        }
+
+        function loadBlogs() {
+            const blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+            const blogPostsContainer = document.getElementById('blog-posts');
+            blogPostsContainer.innerHTML = '';
+
+            blogPosts.forEach((blog, index) => {
+                const blogPost = document.createElement('div');
+                blogPost.className = 'blog-post';
+                blogPost.innerHTML = `
+                    <h2>${blog.title}</h2>
+                    <p>Posted on ${blog.date} by Admin</p>
+                    <p>${blog.content}</p>
+                    <button class="edit-btn" onclick="editBlog(${index})">Edit</button>
+                    <button class="delete-btn" onclick="deleteBlog(${index})">Delete</button>
+                `;
+                blogPostsContainer.appendChild(blogPost);
+            });
+            updateUnlockedFeatures();
+        }
+
+        function addBlog() {
+            const password = document.getElementById('password').value;
+            if (password !== ADMIN_PASSWORD) {
+                alert('Incorrect password!');
+                return;
+            }
+
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            const blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+            blogPosts.push({
+                title,
+                content,
+                date: new Date().toLocaleDateString()
+            });
+
+            localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+            loadBlogs();
+            
+            document.getElementById('title').value = '';
+            document.getElementById('content').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function editBlog(index) {
+            const password = prompt('Enter password to edit:');
+            if (password !== ADMIN_PASSWORD) {
+                alert('Incorrect password!');
+                return;
+            }
+
+            const blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+            const blog = blogPosts[index];
+            
+            const newTitle = prompt('Enter new title:', blog.title);
+            const newContent = prompt('Enter new content:', blog.content);
+            
+            if (newTitle && newContent) {
+                blog.title = newTitle;
+                blog.content = newContent;
+                localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+                loadBlogs();
+            }
+        }
+
+        function deleteBlog(index) {
+            const password = prompt('Enter password to delete:');
+            if (password !== ADMIN_PASSWORD) {
+                alert('Incorrect password!');
+                return;
+            }
+
+            if (confirm('Are you sure you want to delete this post?')) {
+                const blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+                blogPosts.splice(index, 1);
+                localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+                loadBlogs();
+            }
+        }
+    </script>
+</body>
+</html>
